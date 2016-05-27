@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QTreeWidgetItem>
 
+#include <libical/ical.h>
+
 #include "task.h"
 
 namespace Ui {
@@ -20,6 +22,10 @@ public:
     QString createUid();
     QTreeWidgetItem* selectedTreeWidgetItem();
     Task* selectedTask();
+
+public:
+    void createIcalTask(Task *task);
+    void saveToIcsFile(icalcomponent *comp);
 
 private slots:
     void on_actionNewProject_triggered();

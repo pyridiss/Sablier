@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include <libical/icaltypes.h>
+
 #include "event.h"
 #include "duration.h"
 
@@ -25,6 +27,11 @@ public:
     QString mName;
     QString mUID;
     Duration mDuration;
+
+public:
+    std::string icalSummary();
+    std::string icalUid();
+    std::string icalRelatedTo();
 };
 
 #endif // TASK_H

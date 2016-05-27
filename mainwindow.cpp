@@ -1,6 +1,9 @@
 #include <QInputDialog>
 #include <QUuid>
 
+#include <libical/ical.h>
+#include <libical/icalss.h>
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -65,6 +68,7 @@ void MainWindow::on_actionNewProject_triggered()
     mProjects.insert(newTask->mUID, newTask);
 
     item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
+    createIcalTask(newTask);
 }
 
 void MainWindow::on_actionNewTask_triggered()
@@ -95,4 +99,35 @@ void MainWindow::on_actionNewTask_triggered()
     parentTask->mChildren.push_back(newTask);
 
     item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
+    createIcalTask(newTask);
+}
+
+void MainWindow::createIcalTask(Task* task)
+{
+    icalcomponent *todo;
+    icalproperty  *prop;
+
+    todo = icalcomponent_new(ICAL_VTODO_COMPONENT);
+
+    prop = icalproperty_new_summary(task->icalSummary().c_str());
+    icalcomponent_add_property(todo, prop);
+
+    prop = icalproperty_new_uid(task->icalUid().c_str());
+    icalcomponent_add_property(todo, prop);
+
+    if (task->icalRelatedTo() != "")
+    {
+        prop = icalproperty_new_relatedto(task->icalRelatedTo().c_str());
+        icalcomponent_add_property(todo, prop);
+    }
+
+    saveToIcsFile(todo);
+}
+
+void MainWindow::saveToIcsFile(icalcomponent *comp)
+{
+    icalset* file = icalfileset_new("/home/quentin/Public/test.ics");
+    icalset_add_component(file, comp);
+    icalfileset_commit(file);
+    icalfileset_free(file);
 }

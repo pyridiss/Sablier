@@ -22,4 +22,6 @@ HEADERS  += mainwindow.h \
     event.h \
     duration.h
 
+LIBS     += -lical -licalss
+
 FORMS    += mainwindow.ui
