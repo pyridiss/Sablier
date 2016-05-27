@@ -24,6 +24,8 @@ public:
     Task* selectedTask();
 
 public:
+    void addTask(QString name, QString uid, QTreeWidgetItem* parentWidget, Task* parentTask);
+    void addTask(QString name, QString uid, QString parentUid);
     void createIcalTask(Task *task);
     void saveToIcsFile(icalcomponent *comp);
 

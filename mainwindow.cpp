@@ -57,18 +57,7 @@ void MainWindow::on_actionNewProject_triggered()
 
     ui->selectProject->addItem(name);
 
-    QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText(0, name);
-    item->setText(1, "00:00:00");
-    ui->treeWidget->addTopLevelItem(item);
-
-    Task* newTask = new Task();
-    newTask->mName = name;
-    newTask->mUID = createUid();
-    mProjects.insert(newTask->mUID, newTask);
-
-    item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
-    createIcalTask(newTask);
+    addTask(name, "", NULL, NULL);
 }
 
 void MainWindow::on_actionNewTask_triggered()
@@ -85,21 +74,56 @@ void MainWindow::on_actionNewTask_triggered()
                                          &ok);
     if (!ok || name.isEmpty()) return;
 
-    ui->selectProject->addItem(name);
+    addTask(name, "", parentWidget, parentTask);
+}
+
+void MainWindow::addTask(QString name, QString uid, QTreeWidgetItem* parentWidget, Task* parentTask)
+{
+    Task* newTask = new Task();
+    newTask->mName = name;
+    if (uid == "") newTask->mUID = createUid();
+    else newTask->mUID = uid;
+    newTask->pParent = parentTask;
 
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, name);
     item->setText(1, "00:00:00");
-    parentWidget->addChild(item);
-
-    Task* newTask = new Task();
-    newTask->mName = name;
-    newTask->mUID = createUid();
-    newTask->pParent = parentTask;
-    parentTask->mChildren.push_back(newTask);
-
     item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
-    createIcalTask(newTask);
+    item->setData(1, Qt::UserRole, newTask->mUID);
+
+    if (parentWidget == NULL)
+        ui->treeWidget->addTopLevelItem(item);
+    else
+        parentWidget->addChild(item);
+
+    if (parentTask == NULL)
+        mProjects.insert(newTask->mUID, newTask);
+    else
+        parentTask->mChildren.push_back(newTask);
+
+    if (uid == "")
+        createIcalTask(newTask);
+}
+
+void MainWindow::addTask(QString name, QString uid, QString parentUid)
+{
+    QTreeWidgetItemIterator it(ui->treeWidget);
+
+    if (parentUid != "")
+    {
+        while (*it)
+        {
+            if ((*it)->data(1, Qt::UserRole) == parentUid)
+                    break;
+            ++it;
+        }
+
+        addTask(name, uid, *it, (Task*)((*it)->data(0, Qt::UserRole).value<void*>()));
+    }
+    else
+    {
+        addTask(name, uid, NULL, NULL);
+    }
 }
 
 void MainWindow::createIcalTask(Task* task)
