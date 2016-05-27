@@ -25,6 +25,22 @@ QString MainWindow::createUid()
     return uuid;
 }
 
+QTreeWidgetItem* MainWindow::selectedTreeWidgetItem()
+{
+    if (ui->treeWidget->selectedItems().empty()) return NULL;
+
+    return ui->treeWidget->selectedItems().first();
+
+}
+
+Task* MainWindow::selectedTask()
+{
+    QTreeWidgetItem* item = selectedTreeWidgetItem();
+    if (item == NULL) return NULL;
+
+    return (Task*)item->data(0, Qt::UserRole).value<void*>();
+}
+
 void MainWindow::on_actionNewProject_triggered()
 {
     bool ok;
@@ -51,10 +67,7 @@ void MainWindow::on_actionNewProject_triggered()
 
 void MainWindow::on_actionNewTask_triggered()
 {
-    //We first check if a project or a task is selected
-    if (ui->treeWidget->selectedItems().empty()) return;
-
-    QTreeWidgetItem* parent = ui->treeWidget->selectedItems().first();
+    QTreeWidgetItem* parentWidget = selectedTreeWidgetItem();
 
     bool ok;
     QString name = QInputDialog::getText(this,
@@ -70,5 +83,5 @@ void MainWindow::on_actionNewTask_triggered()
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, name);
     item->setText(1, "00:00:00");
-    parent->addChild(item);
+    parentWidget->addChild(item);
 }

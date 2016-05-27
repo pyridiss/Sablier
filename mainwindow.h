@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidgetItem>
 
 #include "task.h"
 
@@ -17,6 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     QString createUid();
+    QTreeWidgetItem* selectedTreeWidgetItem();
+    Task* selectedTask();
 
 private slots:
     void on_actionNewProject_triggered();
