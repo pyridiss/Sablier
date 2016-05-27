@@ -16,6 +16,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QString MainWindow::createUid()
+{
+    QString uuid = QUuid::createUuid().toString();
+    //Remove brackets from uuid
+    uuid.replace('{', "");
+    uuid.replace('}', "");
+    return uuid;
+}
+
 void MainWindow::on_actionNewProject_triggered()
 {
     bool ok;
@@ -36,7 +45,7 @@ void MainWindow::on_actionNewProject_triggered()
 
     Task* newTask = new Task();
     newTask->mName = name;
-    newTask->mUID = QUuid::createUuid().toString();
+    newTask->mUID = createUid();
     mProjects.insert(newTask->mUID, newTask);
 }
 
