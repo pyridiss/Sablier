@@ -311,14 +311,62 @@
    </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionNewProject"/>
+   <addaction name="actionNewTask"/>
+   <addaction name="actionStartTask"/>
+   <addaction name="actionStopTask"/>
+   <addaction name="actionRemoveTask"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNewProject">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
+   <property name="text">
+    <string>New project</string>
+   </property>
+  </action>
+  <action name="actionNewTask">
+   <property name="icon">
+    <iconset theme="go-next-view-page"/>
+   </property>
+   <property name="text">
+    <string>New task</string>
+   </property>
+  </action>
+  <action name="actionStartTask">
+   <property name="icon">
+    <iconset theme="media-playback-start"/>
+   </property>
+   <property name="text">
+    <string>Start task</string>
+   </property>
+  </action>
+  <action name="actionStopTask">
+   <property name="icon">
+    <iconset theme="media-playback-stop"/>
+   </property>
+   <property name="text">
+    <string>Stop task</string>
+   </property>
+  </action>
+  <action name="actionRemoveTask">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
+   <property name="text">
+    <string>Remove task</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
