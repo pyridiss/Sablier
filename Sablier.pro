@@ -19,6 +19,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     task.h \
-    event.h
+    event.h \
+    duration.h
 
 FORMS    += mainwindow.ui
