@@ -2,6 +2,7 @@
 
 Task::Task(QObject *parent) : QObject(parent)
 {
+    pParent = NULL;
 
 }
 

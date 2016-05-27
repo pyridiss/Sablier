@@ -70,6 +70,7 @@ void MainWindow::on_actionNewProject_triggered()
 void MainWindow::on_actionNewTask_triggered()
 {
     QTreeWidgetItem* parentWidget = selectedTreeWidgetItem();
+    Task* parentTask = selectedTask();
 
     bool ok;
     QString name = QInputDialog::getText(this,
@@ -90,5 +91,8 @@ void MainWindow::on_actionNewTask_triggered()
     Task* newTask = new Task();
     newTask->mName = name;
     newTask->mUID = createUid();
+    newTask->pParent = parentTask;
+    parentTask->mChildren.push_back(newTask);
+
     item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
 }

@@ -16,9 +16,10 @@ signals:
 
 public slots:
 
-private:
+public:
     QList<Task*> mChildren;
     QMap<QString, Event*> mEvents;
+    Task* pParent;
 
 public:
     QString mName;
