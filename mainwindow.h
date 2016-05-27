@@ -28,6 +28,7 @@ public:
     void addTask(QString name, QString uid, QString parentUid);
     void createIcalTask(Task *task);
     void saveToIcsFile(icalcomponent *comp);
+    void loadFromIcsFile();
 
 private slots:
     void on_actionNewProject_triggered();

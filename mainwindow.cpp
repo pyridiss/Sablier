@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    loadFromIcsFile();
 }
 
 MainWindow::~MainWindow()
@@ -154,4 +156,42 @@ void MainWindow::saveToIcsFile(icalcomponent *comp)
     icalset_add_component(file, comp);
     icalfileset_commit(file);
     icalfileset_free(file);
+}
+
+char* read_stream(char *s, size_t size, void *d)
+{
+    char *c = fgets(s, size, (FILE*)d);
+
+    return c;
+}
+
+void MainWindow::loadFromIcsFile()
+{
+    char* line;
+    icalcomponent *c;
+    icalparser *parser = icalparser_new();
+
+    FILE* stream = fopen("/home/quentin/Public/test.ics", "r");
+
+    icalparser_set_gen_data(parser, stream);
+
+    do
+    {
+        line = icalparser_get_line(parser, read_stream);
+        c = icalparser_add_line(parser, line);
+
+        if (c != 0)
+        {
+            if (icalcomponent_isa(c) == ICAL_VTODO_COMPONENT)
+            {
+                const char* name   = icalcomponent_get_summary(c);
+                const char* uid    = icalcomponent_get_uid(c);
+                icalproperty *p    = icalcomponent_get_first_property(c, ICAL_RELATEDTO_PROPERTY);
+                const char* parent = icalproperty_get_relatedto(p);
+                addTask(name, uid, parent);
+            }
+            icalcomponent_free(c);
+        }
+
+    } while (line != 0);
 }
