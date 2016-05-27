@@ -63,6 +63,8 @@ void MainWindow::on_actionNewProject_triggered()
     newTask->mName = name;
     newTask->mUID = createUid();
     mProjects.insert(newTask->mUID, newTask);
+
+    item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
 }
 
 void MainWindow::on_actionNewTask_triggered()
@@ -84,4 +86,9 @@ void MainWindow::on_actionNewTask_triggered()
     item->setText(0, name);
     item->setText(1, "00:00:00");
     parentWidget->addChild(item);
+
+    Task* newTask = new Task();
+    newTask->mName = name;
+    newTask->mUID = createUid();
+    item->setData(0, Qt::UserRole, qVariantFromValue((void*) newTask));
 }
