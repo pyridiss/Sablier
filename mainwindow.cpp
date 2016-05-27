@@ -1,4 +1,5 @@
 #include <QInputDialog>
+#include <QUuid>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -32,6 +33,11 @@ void MainWindow::on_actionNewProject_triggered()
     item->setText(0, name);
     item->setText(1, "00:00:00");
     ui->treeWidget->addTopLevelItem(item);
+
+    Task* newTask = new Task();
+    newTask->mName = name;
+    newTask->mUID = QUuid::createUuid().toString();
+    mProjects.insert(newTask->mUID, newTask);
 }
 
 void MainWindow::on_actionNewTask_triggered()

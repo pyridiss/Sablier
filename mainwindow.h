@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "task.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -17,11 +19,11 @@ public:
 
 private slots:
     void on_actionNewProject_triggered();
-
     void on_actionNewTask_triggered();
 
 private:
     Ui::MainWindow *ui;
+    QMap<QString, Task*> mProjects;
 };
 
 #endif // MAINWINDOW_H
