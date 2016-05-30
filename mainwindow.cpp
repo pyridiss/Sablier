@@ -213,6 +213,31 @@ void MainWindow::createIcalTask(Task* task)
     saveToIcsFile(todo);
 }
 
+void MainWindow::createIcalEvent(Event *event)
+{
+    icalcomponent *iEvent;
+    icalproperty  *prop;
+
+    iEvent = icalcomponent_new(ICAL_VEVENT_COMPONENT);
+
+    prop = icalproperty_new_summary(event->icalSummary().c_str());
+    icalcomponent_add_property(iEvent, prop);
+
+    prop = icalproperty_new_uid(event->icalUid().c_str());
+    icalcomponent_add_property(iEvent, prop);
+
+    prop = icalproperty_new_relatedto(event->icalRelatedTo().c_str());
+    icalcomponent_add_property(iEvent, prop);
+
+    prop = icalproperty_new_dtstart(event->icalDtStart());
+    icalcomponent_add_property(iEvent, prop);
+
+    prop = icalproperty_new_dtend(event->icalDtEnd());
+    icalcomponent_add_property(iEvent, prop);
+
+    saveToIcsFile(iEvent);
+}
+
 void MainWindow::saveToIcsFile(icalcomponent *comp)
 {
     icalset* file = icalfileset_new("/home/quentin/Public/test.ics");

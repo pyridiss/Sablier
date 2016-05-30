@@ -32,6 +32,7 @@ public:
     void addTask(QString name, QString uid, QString parentUid);
     void addEvent(Task* parentTask, QString uid);
     void createIcalTask(Task *task);
+    void createIcalEvent(Event *event);
     void saveToIcsFile(icalcomponent *comp);
     void loadFromIcsFile();
 
