@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2,2">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -148,9 +148,6 @@
       <property name="columnCount">
        <number>2</number>
       </property>
-      <attribute name="headerDefaultSectionSize">
-       <number>400</number>
-      </attribute>
       <attribute name="headerShowSortIndicator" stdset="0">
        <bool>true</bool>
       </attribute>
@@ -245,7 +242,7 @@
             <enum>QAbstractItemView::ScrollPerPixel</enum>
            </property>
            <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>290</number>
+            <number>200</number>
            </attribute>
            <attribute name="horizontalHeaderStretchLastSection">
             <bool>true</bool>
@@ -329,7 +326,8 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNewProject">
    <property name="icon">
-    <iconset theme="document-new"/>
+    <iconset theme="document-new">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>New project</string>
@@ -337,7 +335,8 @@
   </action>
   <action name="actionNewTask">
    <property name="icon">
-    <iconset theme="go-next-view-page"/>
+    <iconset theme="go-next-view-page">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>New task</string>
@@ -345,7 +344,8 @@
   </action>
   <action name="actionStartTask">
    <property name="icon">
-    <iconset theme="media-playback-start"/>
+    <iconset theme="media-playback-start">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Start task</string>
@@ -353,7 +353,8 @@
   </action>
   <action name="actionStopTask">
    <property name="icon">
-    <iconset theme="media-playback-stop"/>
+    <iconset theme="media-playback-stop">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Stop task</string>
@@ -361,7 +362,8 @@
   </action>
   <action name="actionRemoveTask">
    <property name="icon">
-    <iconset theme="edit-delete"/>
+    <iconset theme="edit-delete">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Remove task</string>
