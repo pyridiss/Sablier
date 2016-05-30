@@ -79,6 +79,47 @@ void MainWindow::on_actionNewTask_triggered()
     addTask(name, "", parentWidget, parentTask);
 }
 
+void MainWindow::on_addEventButton_clicked()
+{
+ //   QTreeWidgetItem* parentWidget = selectedTreeWidgetItem();
+    Task* parentTask = selectedTask();
+
+    if (parentTask == NULL) return;
+
+    addEvent(parentTask, "");
+}
+
+void MainWindow::addEvent(Task* parentTask, QString uid)
+{
+    Event* newEvent = new Event();
+    newEvent->mName = parentTask->mName;
+    if (uid == "") newEvent->mUID = createUid();
+    else newEvent->mUID = uid;
+    newEvent->pParent = parentTask;
+
+    ui->tableEvents->insertRow(0);
+
+    QTableWidgetItem *widgetUid = new QTableWidgetItem();
+    widgetUid->setText(newEvent->mUID);
+    ui->tableEvents->setItem(0, 0, widgetUid);
+
+    QTableWidgetItem *widgetName = new QTableWidgetItem();
+    widgetName->setText(newEvent->mName);
+    ui->tableEvents->setItem(0, 1, widgetName);
+
+    // Columns 2 and 3 are DateItem's instead of QTableWidgetItem's to be correctly sorted
+
+    DateItem *start = new DateItem();
+    start->setText(newEvent->mStartTime.toString());
+    start->mTime = newEvent->mStartTime;
+    ui->tableEvents->setItem(0, 2, start);
+
+    DateItem *end = new DateItem();
+    end->setText(newEvent->mEndTime.toString());
+    end->mTime = newEvent->mEndTime;
+    ui->tableEvents->setItem(0, 3, end);
+}
+
 void MainWindow::addTask(QString name, QString uid, QTreeWidgetItem* parentWidget, Task* parentTask)
 {
     Task* newTask = new Task();

@@ -2,6 +2,9 @@
 #define EVENT_H
 
 #include <QObject>
+#include <QDateTime>
+
+class Task;
 
 class Event : public QObject
 {
@@ -12,6 +15,13 @@ public:
 signals:
 
 public slots:
+
+public:
+    Task* pParent;
+    QString mName;
+    QString mUID;
+    QDateTime mStartTime;
+    QDateTime mEndTime;
 };
 
 #endif // EVENT_H
