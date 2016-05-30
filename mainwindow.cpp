@@ -96,8 +96,20 @@ void MainWindow::on_addEventButton_clicked()
     addEvent(parentTask, "");
 }
 
+void MainWindow::on_tableEvents_cellChanged(int row, int column)
+{
+    Event* event = (Event*)ui->tableEvents->item(row, 0)->data(Qt::UserRole).value<void*>();
+    event->mName      = ui->tableEvents->item(row, 1)->text();
+    event->mStartTime = QDateTime::fromString(ui->tableEvents->item(row, 2)->text());
+    event->mEndTime   = QDateTime::fromString(ui->tableEvents->item(row, 3)->text());
+
+    createIcalEvent(event);
+}
+
 void MainWindow::addEvent(Task* parentTask, QString uid)
 {
+    ui->tableEvents->blockSignals(true);
+
     Event* newEvent = new Event();
     newEvent->mName = parentTask->mName;
     if (uid == "") newEvent->mUID = createUid();
@@ -108,6 +120,7 @@ void MainWindow::addEvent(Task* parentTask, QString uid)
 
     QTableWidgetItem *widgetUid = new QTableWidgetItem();
     widgetUid->setText(newEvent->mUID);
+    widgetUid->setData(Qt::UserRole, qVariantFromValue((void*) newEvent));
     ui->tableEvents->setItem(0, 0, widgetUid);
 
     QTableWidgetItem *widgetName = new QTableWidgetItem();
@@ -125,6 +138,8 @@ void MainWindow::addEvent(Task* parentTask, QString uid)
     end->setText(newEvent->mEndTime.toString());
     end->mTime = newEvent->mEndTime;
     ui->tableEvents->setItem(0, 3, end);
+
+    ui->tableEvents->blockSignals(false);
 }
 
 void MainWindow::addTask(QString name, QString uid, QTreeWidgetItem* parentWidget, Task* parentTask)

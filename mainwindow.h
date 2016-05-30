@@ -39,6 +39,7 @@ private slots:
     void on_actionNewProject_triggered();
     void on_actionNewTask_triggered();
     void on_addEventButton_clicked();
+    void on_tableEvents_cellChanged(int row, int column);
 
 private:
     Ui::MainWindow *ui;
