@@ -5,6 +5,8 @@
 #include <QDateTime>
 #include <QTreeWidgetItem>
 #include <QTableWidgetItem>
+#include <QItemDelegate>
+#include <QDateTimeEdit>
 
 #include <libical/ical.h>
 
@@ -61,6 +63,40 @@ public:
             return (mTime < right->mTime);
         }
         return (QTableWidgetItem::operator<(other));
+    }
+};
+
+class TaskPropertiesDateTimeEditDelegate : public QItemDelegate
+{
+public:
+    TaskPropertiesDateTimeEditDelegate(QObject *parent = 0) : QItemDelegate(parent)
+    {
+    }
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+    {
+        QDateTimeEdit *editor = new QDateTimeEdit(parent);
+        editor->setDisplayFormat(QString("dd/MM/yyyy  HH:mm:ss"));
+        return editor;
+    }
+
+    void setEditorData(QWidget *editor, const QModelIndex &index) const
+    {
+        QDateTime dateTime = QDateTime::fromString(index.model()->data(index, Qt::DisplayRole).toString());
+        QDateTimeEdit *dateTimeWidget = dynamic_cast<QDateTimeEdit*>(editor);
+        dateTimeWidget->setDateTime(dateTime);
+    }
+
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+    {
+        QDateTimeEdit *dateTimeWidget = dynamic_cast<QDateTimeEdit*>(editor);
+        QDateTime dateTime = dateTimeWidget->dateTime();
+        model->setData(index, dateTime.toString(), Qt::EditRole);
+    }
+
+    void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex&) const
+    {
+        editor->setGeometry(option.rect);
     }
 };
 

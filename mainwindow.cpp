@@ -13,6 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    TaskPropertiesDateTimeEditDelegate *widgetDelegate = new TaskPropertiesDateTimeEditDelegate(ui->tableEvents);
+    ui->tableEvents->setItemDelegateForColumn(2, widgetDelegate);
+    ui->tableEvents->setItemDelegateForColumn(3, widgetDelegate);
+
+    ui->tableEvents->setColumnHidden(0, true);
+    ui->tableEvents->setSortingEnabled(true);
+
     loadFromIcsFile();
 }
 
