@@ -30,7 +30,7 @@ public:
 public:
     void addTask(QString name, QString uid, QTreeWidgetItem* parentWidget, Task* parentTask);
     void addTask(QString name, QString uid, QString parentUid);
-    void addEvent(Task* parentTask, QString uid);
+    Event* addEvent(Task* parentTask, QString uid, QString name = "", icaltimetype start = icaltimetype(), icaltimetype end = icaltimetype());
     void createIcalTask(Task *task);
     void createIcalEvent(Event *event);
     void saveToIcsFile(icalcomponent *comp, std::string uid);
