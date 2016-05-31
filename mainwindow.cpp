@@ -3,9 +3,12 @@
 
 #include <libical/ical.h>
 #include <libical/icalss.h>
+#include <libical/icalfilesetimpl.h>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+icalcomponent* fetch(icalset* set,const char* uid);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -210,7 +213,7 @@ void MainWindow::createIcalTask(Task* task)
         icalcomponent_add_property(todo, prop);
     }
 
-    saveToIcsFile(todo);
+    saveToIcsFile(todo, task->icalUid());
 }
 
 void MainWindow::createIcalEvent(Event *event)
@@ -235,13 +238,24 @@ void MainWindow::createIcalEvent(Event *event)
     prop = icalproperty_new_dtend(event->icalDtEnd());
     icalcomponent_add_property(iEvent, prop);
 
-    saveToIcsFile(iEvent);
+    saveToIcsFile(iEvent, event->icalUid());
 }
 
-void MainWindow::saveToIcsFile(icalcomponent *comp)
+void MainWindow::saveToIcsFile(icalcomponent *comp, std::string uid)
 {
     icalset* file = icalfileset_new("/home/quentin/Public/test.ics");
-    icalset_add_component(file, comp);
+    icalfileset *fset = (icalfileset*) file;
+
+    icalcomponent* old = fetch(file, uid.c_str());
+    if (old != NULL)
+    {
+        icalcomponent_remove_component(icalcomponent_get_first_component(fset->cluster, ICAL_ANY_COMPONENT), old);
+    }
+
+    icalcomponent_add_component(icalcomponent_get_first_component(fset->cluster, ICAL_ANY_COMPONENT), comp);
+
+    icalfileset_mark(file);
+
     icalfileset_commit(file);
     icalfileset_free(file);
 }
@@ -279,7 +293,6 @@ void MainWindow::loadFromIcsFile()
                     const char* uid    = icalcomponent_get_uid(inner);
                     icalproperty *p    = icalcomponent_get_first_property(inner, ICAL_RELATEDTO_PROPERTY);
                     const char* parent = icalproperty_get_relatedto(p);
-                    qDebug() << name << uid << parent << ";";
                     addTask(name, uid, parent);
                 }
                 inner = icalcomponent_get_next_component(c, ICAL_ANY_COMPONENT);

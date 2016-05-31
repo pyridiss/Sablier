@@ -33,7 +33,7 @@ public:
     void addEvent(Task* parentTask, QString uid);
     void createIcalTask(Task *task);
     void createIcalEvent(Event *event);
-    void saveToIcsFile(icalcomponent *comp);
+    void saveToIcsFile(icalcomponent *comp, std::string uid);
     void loadFromIcsFile();
 
 private slots:
