@@ -119,6 +119,8 @@ void MainWindow::addEvent(Task* parentTask, QString uid)
     else newEvent->mUID = uid;
     newEvent->pParent = parentTask;
 
+    parentTask->mEvents.insert(uid, newEvent);
+
     ui->tableEvents->insertRow(0);
 
     QTableWidgetItem *widgetUid = new QTableWidgetItem();
@@ -300,4 +302,46 @@ void MainWindow::loadFromIcsFile()
         }
 
     } while (line != 0);
+}
+
+void MainWindow::on_treeWidget_itemSelectionChanged()
+{
+    ui->tableEvents->blockSignals(true);
+
+    //Remove everything
+    ui->tableEvents->setSortingEnabled(false);
+    ui->tableEvents->clearContents();
+    while (ui->tableEvents->rowCount() > 0)
+        ui->tableEvents->removeRow(0);
+
+    int row = 0;
+    foreach(Event* i, selectedTask()->mEvents)
+    {
+        ui->tableEvents->insertRow(row);
+
+        QTableWidgetItem *uid = new QTableWidgetItem();
+        uid->setText(i->mUID);
+        ui->tableEvents->setItem(row, 0, uid);
+
+        QTableWidgetItem *name = new QTableWidgetItem();
+        name->setText(i->mName);
+        ui->tableEvents->setItem(row, 1, name);
+
+        DateItem *start = new DateItem();
+        start->setText(i->mStartTime.toString());
+        start->mTime = i->mStartTime;
+        ui->tableEvents->setItem(row, 2, start);
+
+        DateItem *end = new DateItem();
+        end->setText(i->mEndTime.toString());
+        end->mTime = i->mEndTime;
+        ui->tableEvents->setItem(row, 3, end);
+
+        ++row;
+    }
+
+    ui->tableEvents->sortItems(2, Qt::DescendingOrder);
+    ui->tableEvents->setSortingEnabled(true);
+
+    ui->tableEvents->blockSignals(false);
 }
