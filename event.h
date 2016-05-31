@@ -31,6 +31,8 @@ public:
     std::string icalRelatedTo();
     icaltimetype icalDtStart();
     icaltimetype icalDtEnd();
+    void setStart(icaltimetype t);
+    void setEnd(icaltimetype t);
 };
 
 #endif // EVENT_H

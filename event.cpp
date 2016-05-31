@@ -51,3 +51,14 @@ icaltimetype Event::icalDtEnd()
 
     return end;
 }
+void Event::setStart(icaltimetype t)
+{
+    mStartTime.setDate(QDate(t.year, t.month, t.day));
+    mStartTime.setTime(QTime(t.hour, t.minute, t.second));
+}
+
+void Event::setEnd(icaltimetype t)
+{
+    mEndTime.setDate(QDate(t.year, t.month, t.day));
+    mEndTime.setTime(QTime(t.hour, t.minute, t.second));
+}
