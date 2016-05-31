@@ -33,6 +33,7 @@ icaltimetype Event::icalDtStart()
     start.hour   = mStartTime.time().hour();
     start.minute = mStartTime.time().minute();
     start.second = mStartTime.time().second();
+    start.is_date = false;
 
     return start;
 }
@@ -46,6 +47,7 @@ icaltimetype Event::icalDtEnd()
     end.hour   = mEndTime.time().hour();
     end.minute = mEndTime.time().minute();
     end.second = mEndTime.time().second();
+    end.is_date = false;
 
     return end;
 }
