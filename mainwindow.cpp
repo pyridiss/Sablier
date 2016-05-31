@@ -270,15 +270,20 @@ void MainWindow::loadFromIcsFile()
 
         if (c != 0)
         {
-            if (icalcomponent_isa(c) == ICAL_VTODO_COMPONENT)
+            icalcomponent *inner = icalcomponent_get_first_component(c, ICAL_ANY_COMPONENT);
+            while (inner != NULL)
             {
-                const char* name   = icalcomponent_get_summary(c);
-                const char* uid    = icalcomponent_get_uid(c);
-                icalproperty *p    = icalcomponent_get_first_property(c, ICAL_RELATEDTO_PROPERTY);
-                const char* parent = icalproperty_get_relatedto(p);
-                addTask(name, uid, parent);
+                if (icalcomponent_isa(inner) == ICAL_VTODO_COMPONENT)
+                {
+                    const char* name   = icalcomponent_get_summary(inner);
+                    const char* uid    = icalcomponent_get_uid(inner);
+                    icalproperty *p    = icalcomponent_get_first_property(inner, ICAL_RELATEDTO_PROPERTY);
+                    const char* parent = icalproperty_get_relatedto(p);
+                    qDebug() << name << uid << parent << ";";
+                    addTask(name, uid, parent);
+                }
+                inner = icalcomponent_get_next_component(c, ICAL_ANY_COMPONENT);
             }
-            icalcomponent_free(c);
         }
 
     } while (line != 0);
