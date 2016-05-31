@@ -307,6 +307,19 @@ void MainWindow::loadFromIcsFile()
                     const char* parent = icalproperty_get_relatedto(p);
                     addTask(name, uid, parent);
                 }
+                if (icalcomponent_isa(inner) == ICAL_VEVENT_COMPONENT)
+                {
+                    const char* name   = icalcomponent_get_summary(inner);
+                    const char* uid    = icalcomponent_get_uid(inner);
+                    icalproperty *p    = icalcomponent_get_first_property(inner, ICAL_RELATEDTO_PROPERTY);
+                    const char* parent = icalproperty_get_relatedto(p);
+                    p                  = icalcomponent_get_first_property(inner, ICAL_DTSTART_PROPERTY);
+                    icaltimetype start = icalproperty_get_dtstart(p);
+                    p                  = icalcomponent_get_first_property(inner, ICAL_DTEND_PROPERTY);
+                    icaltimetype end   = icalproperty_get_dtend(p);
+                    Task* task         = findTask(parent);
+                    addEvent(task, uid, name, start, end);
+                }
                 inner = icalcomponent_get_next_component(c, ICAL_ANY_COMPONENT);
             }
         }
