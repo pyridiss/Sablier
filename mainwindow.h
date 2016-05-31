@@ -35,6 +35,7 @@ public:
     void createIcalEvent(Event *event);
     void saveToIcsFile(icalcomponent *comp, std::string uid);
     void loadFromIcsFile();
+    Task* findTask(QString uid);
 
 private slots:
     void on_actionNewProject_triggered();

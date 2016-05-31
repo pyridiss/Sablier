@@ -355,3 +355,17 @@ void MainWindow::on_treeWidget_itemSelectionChanged()
 
     ui->tableEvents->blockSignals(false);
 }
+
+Task* MainWindow::findTask(QString uid)
+{
+    QTreeWidgetItemIterator it(ui->treeWidget);
+
+    while (*it)
+    {
+        if ((*it)->data(1, Qt::UserRole) == uid)
+            break;
+        ++it;
+    }
+
+    return (Task*)((*it)->data(0, Qt::UserRole).value<void*>());
+}
